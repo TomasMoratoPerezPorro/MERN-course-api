@@ -6,6 +6,9 @@ const app = express();
 //Connect database
 connectDB();
 
+//Init Middleware
+app.use(express.json({ extended: false }));
+
 //Test Endpoint
 app.get("/", (req, res) => res.send("API Running"));
 
