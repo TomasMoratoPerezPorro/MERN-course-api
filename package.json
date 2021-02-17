@@ -22,7 +22,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.15",
     "normalize-url": "^5.3.0",
-    "react-scripts": "^4.0.2",
     "request": "^2.88.2"
   },
   "devDependencies": {
