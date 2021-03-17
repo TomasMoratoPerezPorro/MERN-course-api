@@ -7,4 +7,7 @@ export const setAlert = (msg, alertType) => (dispatch) => {
     type: SET_ALERT,
     payload: { msg, alertType, id },
   });
+
+  // First parameter is a funcion, second parameter is the time in miliseconds
+  setTimeout(()=> dispatch({ type: REMOVE_ALERT, payload:id}),5000);
 };

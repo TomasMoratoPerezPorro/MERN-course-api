@@ -89,7 +89,7 @@ const Register = ({ setAlert }) => {
   );
 };
 
-Register.proTypes = {
+Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
 };
 
