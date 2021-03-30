@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import alert from './alert';
+import auth from './auth';
 
 /* 
     We use combineReducers to split the reducing function into separate functions,
@@ -10,4 +11,5 @@ import alert from './alert';
 
 export default combineReducers({
   alert,
+  auth,
 });
