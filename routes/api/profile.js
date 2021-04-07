@@ -8,6 +8,8 @@ const { check, validationResult } = require('express-validator');
 const normalize = require('normalize-url');
 
 const Profile = require('../../models/Profile');
+const User = require('../../models/User');
+const Post = require('../../models/Post');
 
 // @route           GET api/profile/me
 // @description     Get the current user's profile
@@ -16,7 +18,7 @@ const Profile = require('../../models/Profile');
 router.get('/me', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
-      user: req.user.id
+      user: req.user.id,
     }).populate('user', ['name', 'avatar']);
 
     if (!profile) {
@@ -40,8 +42,8 @@ router.post(
     auth,
     [
       check('status', 'Status is required').not().isEmpty(),
-      check('skills', 'Skills is required').not().isEmpty()
-    ]
+      check('skills', 'Skills is required').not().isEmpty(),
+    ],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -72,7 +74,7 @@ router.post(
       skills: Array.isArray(skills)
         ? skills
         : skills.split(',').map((skill) => ' ' + skill.trim()),
-      ...rest
+      ...rest,
     };
 
     //Build social object
@@ -119,7 +121,7 @@ router.get('/', async (req, res) => {
 router.get('/user/:user_id', async (req, res) => {
   try {
     const profile = await Profile.findOne({
-      user: req.params.user_id
+      user: req.params.user_id,
     }).populate('user', ['name', 'avatar']);
 
     if (!profile) {
@@ -141,7 +143,8 @@ router.get('/user/:user_id', async (req, res) => {
 
 router.delete('/', auth, async (req, res) => {
   try {
-    //TODO - remove users posts
+    //Remove users posts
+    await Post.deleteMany({ user: req.user.id });
 
     //Remove profile
     await Profile.findOneAndDelete({ user: req.body.id });
@@ -166,8 +169,8 @@ router.put(
     [
       check('title', 'Title is required').not().isEmpty(),
       check('company', 'Company is required').not().isEmpty(),
-      check('from', 'From date is required').not().isEmpty()
-    ]
+      check('from', 'From date is required').not().isEmpty(),
+    ],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -181,7 +184,7 @@ router.put(
       from,
       to,
       current,
-      description
+      description,
     } = req.body;
 
     const newExp = {
@@ -191,7 +194,7 @@ router.put(
       from,
       to,
       current,
-      description
+      description,
     };
 
     try {
@@ -248,8 +251,8 @@ router.put(
       check('school', 'School is required').not().isEmpty(),
       check('degree', 'Degree is required').not().isEmpty(),
       check('fieldofstudy', 'Field of study is required').not().isEmpty(),
-      check('from', 'From date is required').not().isEmpty()
-    ]
+      check('from', 'From date is required').not().isEmpty(),
+    ],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -263,7 +266,7 @@ router.put(
       from,
       to,
       current,
-      description
+      description,
     } = req.body;
 
     const newEdu = {
@@ -273,7 +276,7 @@ router.put(
       from,
       to,
       current,
-      description
+      description,
     };
 
     try {
@@ -329,7 +332,7 @@ router.get('/github/:username', async (req, res) => {
     );
     const headers = {
       'user-agent': 'node.js',
-      Authorization: `token ${config.get('githubToken')}`
+      Authorization: `token ${config.get('githubToken')}`,
     };
 
     const gitHubResponse = await axios.get(uri, { headers });
