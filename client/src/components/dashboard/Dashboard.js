@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
 import DahshboardActions from './DashboardActions';
 import Spinner from '../layout/Spinner';
+import Experience from './Experience';
+import Education from './Education';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -26,6 +28,8 @@ const Dashboard = ({
       {profile != null ? (
         <Fragment>
           <DahshboardActions />
+          <Experience experience={profile.experience}></Experience>
+          <Education education={profile.education}></Education>
         </Fragment>
       ) : (
         <Fragment>
